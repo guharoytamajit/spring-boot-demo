@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<script src="angular.min.js"></script>
+<head><script src="angular-resource.min.js"></script>
+<meta charset="utf-8">
+
+</head>
+<body ng-app="myApp2">
+	<script>
+		var app = angular.module("myApp2", ['ngResource']);
+		app.factory("UserService",function($resource){
+			return $resource("emp/:userId",
+					 {userId: "@id" },
+				        {
+				            "update": {method: "PUT"},
+				            "reviews": {'method': 'GET', 'params': {'reviews_only': "true"}, isArray: true}
+				 
+				        });
+		});
+		app.controller("MyController", ["$scope","$http","UserService",function($scope, $http,UserService) {
+
+			$scope.data = function() {
+				$scope.emps =UserService.query();
+
+			}
+			$scope.data2 = function() {
+				var user=UserService.get({userId: 0},function(user){
+					
+							alert(JSON.stringify(user));
+				});
+				
+			}
+		}]);
+	</script>
+	<div ng-controller="MyController">
+		<button ng-click="data()">Get Employee List</button>
+		<button ng-click="data2()">Get1</button>
+
+		<table>
+			<tr ng-repeat="emp in emps">
+				<td>{{emp.eid}}</td>
+				<td>{{emp.name}}</td>
+				<td><a href="emp/{{emp.eid}}">details</a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
