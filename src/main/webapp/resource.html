@@ -27,6 +27,17 @@
 				var user=UserService.get({userId: 0},function(user){
 					
 							alert(JSON.stringify(user));
+							user.location="uk"
+								UserService.save(user, function() {
+									  alert(JSON.stringify(user));
+									  });
+							var newUser={name:"andy",eid:9,location:"india"};
+							UserService.save(newUser, function() {
+								  alert(JSON.stringify(newUser));
+								  });
+							UserService.remove({userId: 9}, function() {
+								  alert(JSON.stringify(newUser));
+								  }); 
 				});
 				
 			}
